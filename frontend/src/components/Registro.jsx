@@ -2,24 +2,26 @@ import React, { useState } from 'react'
 import Axios from 'axios'
 import Swal from 'sweetalert2'
 
-export default function Login() {
+export default function Registro() {
 
+
+    const [nombre, setNombre] = useState('')
     const [correo, setCorreo] = useState('')
     const [password, setPassword] = useState('')
 
-    const login = async (e) => {
+    const registro = async (e) => {
         e.preventDefault()
-        const usuario = { correo, password }
-        //URL DONDE VAN LOS DATOS Y LOS DATOS
-        const respuesta = await Axios.post('http://localhost:4000/jefe/login', usuario)
+        const usuario = { nombre, correo, password }
+
+        const respuesta = await Axios.post('http://localhost:4000/jefe/crear', usuario)
         console.log(respuesta)
-        const mensaje = respuesta.data.mensaje
+        const mensaje = respuesta.data.mensaje;
         if (mensaje !== 'Bienvenido') {
             Swal.fire({
                 icon: 'error',
                 title: mensaje,
                 showConfirmButton: false,
-                timer: 1500
+                timer: 1800
             })
         } else {
             const token = respuesta.data.token
@@ -29,17 +31,12 @@ export default function Login() {
             sessionStorage.setItem('nombre', nombre)
             sessionStorage.setItem('idusuario', idusuario)
             window.location.href = '/index'
-            /* Swal.fire({
-                icon: 'success',
-                title: mensaje,
-                showConfirmButton: false,
-                timer: 1500
-            }) */
-
-
         }
 
+
     }
+
+
 
     return (
         <div className="container mt-4">
@@ -47,26 +44,35 @@ export default function Login() {
                 <div className="col-md-6 mx-auto">
                     <div className="card">
                         <div className="container text-center fa-6x">
-                            <i className="fas fa-user"></i>
+                            <i className="fas fa-user-plus"></i>
                         </div>
                         <div className="card-header text-center">
-                            <h4>Inicio de Sesión Jefe</h4>
+                            <h4>Registro de Jefe</h4>
                         </div>
                         <div className="card-body">
-                            <form onSubmit={login}>
+                            <form onSubmit={registro}>
+                                <div className="form group">
+                                    <label>Nombre</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        autoFocus required
+                                        onChange={(e) => setNombre(e.target.value)}
+                                    />
+                                </div>
                                 <div className="form group">
                                     <label>Correo</label>
                                     <input
                                         type="email"
                                         className="form-control"
-                                        autoFocus required
+                                        required
                                         onChange={(e) => setCorreo(e.target.value)}
                                     />
                                 </div>
                                 <div className="form group">
                                     <label>Contraseña</label>
                                     <input
-                                        type="password"
+                                        type="text"
                                         className="form-control"
                                         required
                                         onChange={(e) => setPassword(e.target.value)}

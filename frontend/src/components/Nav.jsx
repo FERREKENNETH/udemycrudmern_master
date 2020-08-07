@@ -20,13 +20,13 @@ export default function Nav() {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav ml-auto">
                         <li className="nav-item">
-                            <Link className="nav-link" to="/"><i className="fas fa-user"></i> Bienvenido </Link>
+                            <Link className="nav-link" to="/"><i className="fas fa-user"></i> Bienvenido {sessionStorage.getItem('nombre')}</Link>
                         </li>
                         <li className="nav-item">
                             <Link className="nav-link" to="/" onClick={() => salir()}><i className="fas fa-user-times"></i> Salir</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/"><i className="fas fa-user-plus"></i> Registrar</Link>
+                            <Link className="nav-link" to="/registro"><i className="fas fa-user-plus"></i> Registrar</Link>
                         </li>
                     </ul>
                 </div>

@@ -3,19 +3,23 @@ const router = Router()
 
 const EmpleadoCrtl = require('../controllers/Empleado.controller')
 
-/* const Auth = require('../helper/Auth') */
+const Auth = require('../helpers/Auth')
 
-router.post('/crear', EmpleadoCrtl.crearEmpleado)
 
-router.get('/listar', EmpleadoCrtl.listar)
 
-router.get('/listar/:id', EmpleadoCrtl.listarid)
+router.post('/crear', Auth.verificartoken, EmpleadoCrtl.crearEmpleado)
 
-router.get('/listarporjefe/:id', EmpleadoCrtl.empleadosporjefe)
+router.get('/listar', Auth.verificartoken, EmpleadoCrtl.listar)
 
-router.delete('/eliminar/:id', EmpleadoCrtl.eliminar)
+router.get('/listar/:id', Auth.verificartoken, EmpleadoCrtl.listarid)
 
-router.get('/buscar/:nombre', EmpleadoCrtl.buscarempleado) // por nombre
+router.get('/listarporjefe/:id', Auth.verificartoken, EmpleadoCrtl.empleadosporjefe)
+
+router.delete('/eliminar/:id', Auth.verificartoken, EmpleadoCrtl.eliminar)
+
+router.put('/actualizar/:id', Auth.verificartoken, EmpleadoCrtl.actualizar)
+
+router.get('/buscar/:nombre', Auth.verificartoken, EmpleadoCrtl.buscarempleado) // por nombre
 
 
 
