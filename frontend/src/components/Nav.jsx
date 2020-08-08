@@ -1,8 +1,16 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 export default function Nav() {
+
+    const [menu, setMenu] = useState(false)
+
+    useEffect(() => {
+        if (sessionStorage.getItem('token')) {
+            setMenu(true)
+        }
+    }, [])
 
     const salir = () => {
         sessionStorage.clear()
@@ -17,19 +25,29 @@ export default function Nav() {
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="/navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav ml-auto">
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/"><i className="fas fa-user"></i> Bienvenido {sessionStorage.getItem('nombre')}</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/" onClick={() => salir()}><i className="fas fa-user-times"></i> Salir</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/registro"><i className="fas fa-user-plus"></i> Registrar</Link>
-                        </li>
-                    </ul>
-                </div>
+                {
+                    menu ?
+                        <div className="collapse navbar-collapse" id="navbarNav">
+                            <ul className="navbar-nav ml-auto">
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/"><i className="fas fa-user"></i> Bienvenido {sessionStorage.getItem('nombre')}</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/" onClick={() => salir()}><i className="fas fa-user-times"></i> Salir</Link>
+                                </li>
+                            </ul>
+                        </div>
+                        :
+                        <div className="collapse navbar-collapse" id="navbarNav">
+                            <ul className="navbar-nav ml-auto">
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/registro"><i className="fas fa-user-plus"></i> Registrar</Link>
+                                </li>
+                            </ul>
+                        </div>
+                }
+
+
             </div>
         </nav>
     )

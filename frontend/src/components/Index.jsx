@@ -83,6 +83,20 @@ export default function Index() {
 
     }
 
+    /* BUSCAR POR NOMBRE! */
+    const buscar = async (e) => {
+        if (e.target.value === '') {
+            return obtenerEmpleados()
+        }
+        console.log('desde buscar')
+        const inputValueName = e.target.value
+        const token = sessionStorage.getItem('token')
+        const respuesta = await Axios.get('http://localhost:4000/empleado/buscar/' + inputValueName,
+            { headers: { 'autorizacion': token } }
+        )
+        setEmpleados(respuesta.data)
+    }
+
 
     return (
         <Fragment>
@@ -117,6 +131,7 @@ export default function Index() {
                                 type="search"
                                 placeholder="Buscar"
                                 aria-label="Search"
+                                onChange={(e) => buscar(e)}
                             />
                         </div>
                     </div>

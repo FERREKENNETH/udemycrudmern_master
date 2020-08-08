@@ -52,7 +52,7 @@ EmpleadoCrtl.actualizar = async (req, res) => {
 
 EmpleadoCrtl.buscarempleado = async (req, res) => {
     const nombre = req.params.nombre
-    const respuesta = await Empleado.findOne({ nombre: { $regex: ".*" + nombre + ".*" } })
+    const respuesta = await Empleado.find({ nombre: { $regex: ".*" + nombre + ".*" } })
     res.json(respuesta)
 }
 
