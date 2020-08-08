@@ -5,26 +5,26 @@ const jwt = require('jsonwebtoken')
 
 // CREAR UN NUEVO USUARIO
 JefeCtrl.crearJefe = async (req, res) => {
-    const {nombre, correo, password} = req.body
+    const { nombre, correo, password } = req.body
     const NuevoJefe = new Jefe({
-        nombre, 
-        correo, 
+        nombre,
+        correo,
         password
     })
-    const correojefe= await Jefe.findOne({correo:correo})
+    const correojefe = await Jefe.findOne({ correo: correo })
 
-    if (correojefe){
+    if (correojefe) {
         res.json({
-            mensaje:'El correo ya existe'
+            mensaje: 'El correo ya existe'
         })
     } else {
-        NuevoJefe.password = await bcrypt.hash(password,10)
-        const token = jwt.sign({_id:NuevoJefe._id}, 'palabrasecreta')
+        NuevoJefe.password = await bcrypt.hash(password, 10)
+        const token = jwt.sign({ _id: NuevoJefe._id }, 'palabrasecreta')
         await NuevoJefe.save()
         res.json({
-            mensaje:'Bienvenido',
+            mensaje: 'Bienvenido',
             id: NuevoJefe._id,
-            nombre:NuevoJefe.nombre,
+            nombre: NuevoJefe.nombre,
             token
         })
     }
@@ -32,26 +32,27 @@ JefeCtrl.crearJefe = async (req, res) => {
 
 
 // LOGUEAR USUARIO
-JefeCtrl.login = async (req,res) =>{
-    const {correo, password} = req.body
+JefeCtrl.login = async (req, res) => {
+    const { correo, password } = req.body
 
-    const jefe = await Jefe.findOne({correo: correo})
-    if(!jefe){
+    const jefe = await Jefe.findOne({ correo: correo })
+    if (!jefe) {
         return res.json({
             mensaje: 'correo incorrecto',
             datos: jefe
         })
-    } 
+    }
     const match = await bcrypt.compare(password, jefe.password)
     if (match) {
-        const token = jwt.sign({_id:Jefe._id}, 'palabrasecreta')
+        const token = jwt.sign({ _id: Jefe._id }, 'palabrasecreta')
         res.json({
             mensaje: 'Bienvenido',
-            id:jefe._id,
-            nombre:jefe.nombre,
-            correo:correo,
-            password:password,
-            token:token
+            id: jefe._id,
+            nombre: jefe.nombre,
+            token: token,
+            /* correo:correo,
+            password:password */
+
         })
     } else {
         res.json({
